@@ -24,12 +24,15 @@ class Canvas:
             print(' '.join([col[y] for col in self._canvas]))
 
 class TerminalScribe:
+    #sets degrees for directional movement. thrown off a bit by rounding when pos is set. 
+
     def __init__(self, canvas):
         self.canvas = canvas
         self.trail = '.'
         self.mark = '*'
         self.framerate = 0.2
         self.pos = [0, 0]
+        self.direction = 0
 
     def up(self):
         self.direction = [0, -1]
@@ -67,10 +70,13 @@ class TerminalScribe:
         
         for i in range(size):
             self.up()
-
-    #sets degrees for directional movement. thrown off a bit by rounding when pos is set. 
+    
+    def setPosition(self, pos):
+        self.pos = pos
+        
     def setDegrees(self, degrees):
-        rads = (degrees/180)*math.pi
+        self.degrees = degrees
+        rads = (self.degrees/180)*math.pi
         self.direction = [math.sin(rads), -math.cos(rads)]
 
     #moves the scribe forward; depends on what the direction is currently set to (bvariable of the scribe object)
@@ -81,8 +87,51 @@ class TerminalScribe:
 
 
 
-
+#TESTING 
 canvas = Canvas(30, 30)
+
+#practicing data structures (example code)
+# note: a list of dictionaries is good when you are wanting to set several parameters 
+scribes = [
+    {'degrees': 30, 'position': [10, 5], 'instructions': [
+        {'function': 'forward', 'duration': 5 }
+        ]},
+    {'degrees': 180, 'position': [15, 15], 'instructions': [
+        {'function': 'forward', 'duration': 5 },
+        {'function': 'down', 'duration': 2}
+        ]}
+    ]
+
+for scribeData in scribes:
+    scribeData['scribe'] = TerminalScribe(canvas)
+    scribeData['scribe'].setDegrees(scribeData['degrees'])
+    scribeData['scribe'].setPosition(scribeData['position'])
+
+    # Flatten instructions: convert "{'left':10}" to ['left', 'left', 'left'... ] etc
+    scribeData['instructions_flat'] = []
+    for instruction in scribeData['instructions']:
+        scribeData['instructions_flat'] = scribeData['instructions_flat'] + [instruction['function']]*instruction['duration']
+
+# we don't want to start reading instructions that don't exist -> find what the longest instruction is so we can stop the loop 
+maxInstructionLen = max([len(scribeData['instructions_flat']) for scribeData in scribes])
+
+# reading the instructions (modified from solution code: you can't draw a square using the function from the set of the dictionary at this time)
+for i in range(maxInstructionLen):
+    for scribeData in scribes:
+        if i < len(scribeData['instructions_flat']):
+            if scribeData['instructions_flat'][i] == 'forward':
+                scribeData['scribe'].forward()
+            elif scribeData['instructions_flat'][i] == 'up':
+                scribeData['scribe'].up()
+            elif scribeData['instructions_flat'][i] == 'down':
+                scribeData['scribe'].down()
+            elif scribeData['instructions_flat'][i] == 'left':
+                scribeData['scribe'].left()
+            elif scribeData['instructions_flat'][i] == 'right':
+                scribeData['scribe'].right()
+            
+
+ 
 scribe = TerminalScribe(canvas)
 
 scribe.drawSquare(5)
