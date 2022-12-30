@@ -94,9 +94,11 @@ class TerminalScribe:
             self.draw(pos)
         elif self.canvas.hitsWall(pos)[1] == "v":
             self.direction[0] = -1 * self.direction[0]
+            pos = [self.pos[0] + 2*self.direction[0], self.pos[1]]
             self.draw(pos)
-        elif self.canvas.hitsWall(pos)[0] == "h":
+        elif self.canvas.hitsWall(pos)[1] == "h":
             self.direction[1] = -1 * self.direction[1]
+            pos = [self.pos[0], self.pos[1] + 2 * self.direction[1]]
             self.draw(pos)
 
 
@@ -106,7 +108,7 @@ canvas = Canvas(30, 30)
 
 #practicing data structures (example code)
 # note: a list of dictionaries is good when you are wanting to set several parameters 
-scribes = [
+'''scribes = [
     {'degrees': 30, 'position': [10, 5], 'instructions': [
         {'function': 'forward', 'duration': 5 }
         ]},
@@ -144,10 +146,10 @@ for i in range(maxInstructionLen):
             elif scribeData['instructions_flat'][i] == 'right':
                 scribeData['scribe'].right()
             
-
+'''
  
 scribe = TerminalScribe(canvas)
 
 scribe.setDegrees(150)
-for i in range(300):
+for i in range(500):
     scribe.forward()
