@@ -65,6 +65,16 @@ class TerminalScribe:
         self.canvas.print()
         time.sleep(self.framerate)
     
+    #SOLUTION CODE FROM COURSE VIDEO-- passing in a function
+    #functionality to add: stop it from hitting a wall. 
+    #currently there is no check to stop it from hitting walls.
+    def plotX(self, function):
+        for x in range(self.canvas._x):
+            pos = [x, function(x)]
+            self.draw(pos)
+
+
+    
     #draws a square with sides of a specified length 
     def drawSquare(self, size):
         for i in range(size-1): 
@@ -102,6 +112,10 @@ class TerminalScribe:
             self.draw(pos)
 
 
+# SOLUTION CODE FROM COURSE VIDEO-- defining a function 
+#which we can pass in to perform some predetermined thing with the scribe.
+def sine(x):
+    return 5*math.sin(x/4) + 10
 
 #TESTING 
 canvas = Canvas(30, 30)
@@ -150,6 +164,11 @@ for i in range(maxInstructionLen):
  
 scribe = TerminalScribe(canvas)
 
-scribe.setDegrees(150)
+scribe.setPosition = [15, 15]
+
+scribe.plotX(sine)
+
+
+'''scribe.setDegrees(150)
 for i in range(500):
-    scribe.forward()
+    scribe.forward() '''
