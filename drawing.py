@@ -10,7 +10,15 @@ class Canvas:
         self._canvas = [[' ' for y in range(self._y)] for x in range(self._x)]
 
     def hitsWall(self, point):
-        return round(point[0]) < 0 or round(point[0]) >= self._x or round(point[1]) < 0 or round(point[1]) >= self._y
+        if round(point[0]) < 0 or round(point[0]) >= self._x:
+            # bounced off vertical wall 
+            return True, "v"
+        elif round(point[1]) < 0 or round(point[1]) >= self._y:
+            # bounced off horizontal wall 
+            return True, "h"
+        else: 
+            return False, ""
+
 
     def setPos(self, pos, mark):
         self._canvas[round(pos[0])][round(pos[1])] = mark
@@ -82,7 +90,13 @@ class TerminalScribe:
     #moves the scribe forward; depends on what the direction is currently set to (bvariable of the scribe object)
     def forward (self):
         pos = [self.pos[0] + self.direction[0], self.pos[1] + self.direction[1]]
-        if not self.canvas.hitsWall(pos):
+        if not self.canvas.hitsWall(pos)[0]:
+            self.draw(pos)
+        elif self.canvas.hitsWall(pos)[1] == "v":
+            self.direction[0] = -1 * self.direction[0]
+            self.draw(pos)
+        elif self.canvas.hitsWall(pos)[0] == "h":
+            self.direction[1] = -1 * self.direction[1]
             self.draw(pos)
 
 
@@ -134,12 +148,6 @@ for i in range(maxInstructionLen):
  
 scribe = TerminalScribe(canvas)
 
-scribe.drawSquare(5)
-
-scribe.down()
-scribe.down()
-scribe.down()
-
-scribe.setDegrees(45)
-for i in range(3):
-  scribe.forward()
+scribe.setDegrees(150)
+for i in range(300):
+    scribe.forward()
