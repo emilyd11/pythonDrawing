@@ -94,7 +94,7 @@ class TerminalScribe:
     def setDegrees(self, degrees):
         self.degrees = degrees
         rads = (self.degrees/180)*math.pi
-        self.direction = [-math.sin(rads), -math.cos(rads)]
+        self.direction = [math.sin(rads), -math.cos(rads)]
 
     #moves the scribe forward; depends on what the direction is currently set to (bvariable of the scribe object)
     def forward (self):
@@ -116,7 +116,7 @@ class RandomTerminalScribe(TerminalScribe):
     def setDegrees(self):
         self.degrees = random.randrange(0, 180, 1)
         rads = (self.degrees/180)*math.pi
-        self.direction = [-math.sin(rads), -math.cos(rads)]
+        self.direction = [math.sin(rads), -math.cos(rads)]
     
 
 # SOLUTION CODE FROM COURSE VIDEO-- defining a function 
@@ -171,9 +171,7 @@ for i in range(maxInstructionLen):
  
 scribe = TerminalScribe(canvas)
 
-scribe.setPosition = [15, 15]
-
-scribe.setDegrees(45)
+scribe.setPosition = [0, 0]
 
 scribe.forward()
 scribe.forward()
