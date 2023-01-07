@@ -2,6 +2,7 @@ import os
 import time
 from termcolor import colored
 import math
+import random 
 
 class Canvas:
     def __init__(self, width, height):
@@ -40,7 +41,7 @@ class TerminalScribe:
         self.mark = '*'
         self.framerate = 0.2
         self.pos = [0, 0]
-        self.direction = 0
+        self.direction = [0, 0]
 
     def up(self):
         self.direction = [0, -1]
@@ -73,8 +74,6 @@ class TerminalScribe:
             pos = [x, function(x)]
             self.draw(pos)
 
-
-    
     #draws a square with sides of a specified length 
     def drawSquare(self, size):
         for i in range(size-1): 
@@ -95,7 +94,7 @@ class TerminalScribe:
     def setDegrees(self, degrees):
         self.degrees = degrees
         rads = (self.degrees/180)*math.pi
-        self.direction = [math.sin(rads), -math.cos(rads)]
+        self.direction = [-math.sin(rads), -math.cos(rads)]
 
     #moves the scribe forward; depends on what the direction is currently set to (bvariable of the scribe object)
     def forward (self):
@@ -111,6 +110,14 @@ class TerminalScribe:
             pos = [self.pos[0], self.pos[1] + 2 * self.direction[1]]
             self.draw(pos)
 
+
+class RandomTerminalScribe(TerminalScribe):
+    
+    def setDegrees(self):
+        self.degrees = random.randrange(0, 180, 1)
+        rads = (self.degrees/180)*math.pi
+        self.direction = [-math.sin(rads), -math.cos(rads)]
+    
 
 # SOLUTION CODE FROM COURSE VIDEO-- defining a function 
 #which we can pass in to perform some predetermined thing with the scribe.
@@ -166,7 +173,12 @@ scribe = TerminalScribe(canvas)
 
 scribe.setPosition = [15, 15]
 
-scribe.plotX(sine)
+scribe.setDegrees(45)
+
+scribe.forward()
+scribe.forward()
+scribe.forward()
+scribe.forward()
 
 
 '''scribe.setDegrees(150)
